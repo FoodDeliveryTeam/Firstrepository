@@ -139,10 +139,6 @@ MEDIA_URL= '/media/'
 
 EMAIL_BACKEND ='django.core.mail.backends.console.EmailBackend'
 
-ACCOUNT_ADAPTER = 'pizzeria.account_adapter.NoNewUsersAccountAdapter'
-LOGIN_REDIRECT_URL = 'dashboard'
-
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 

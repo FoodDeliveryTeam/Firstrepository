@@ -27,6 +27,7 @@ class OrderModel(models.Model):
     email = models.CharField(max_length=70,blank=True)
     street =  models.CharField(max_length= 70,blank = True)
     city = models.CharField(max_length=70,blank = True)
+    is_paid = models.BooleanField(default=False)
 
 
     def __str__(self):
