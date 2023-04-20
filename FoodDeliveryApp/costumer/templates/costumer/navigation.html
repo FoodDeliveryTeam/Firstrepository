@@ -1,3 +1,12 @@
+{% load static %}
+
+<style>
+  .hello-msg{
+  font-size: 18px;
+  margin-right:20px;
+  }
+</style>
+
 <nav class="navbar navbar-expand-sm bg-warning navbar-light">
   <a class="navbar-brand" href="{% url 'index' %}">Доставка</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,4 +27,8 @@
       </li>
     </ul>
   </div>
+
+  <span class="hello-msg">Привет, {{request.user}}</span>
+  <span><a class="hello-msg" href = "{% url 'logout' %}" > Выход </a></span>
+
 </nav>
