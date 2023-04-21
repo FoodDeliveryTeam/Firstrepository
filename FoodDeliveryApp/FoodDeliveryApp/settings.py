@@ -66,7 +66,7 @@ ROOT_URLCONF = 'FoodDeliveryApp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -135,7 +135,16 @@ MEDIA_ROOT= os.path.join(BASE_DIR, 'media')
 MEDIA_URL= '/media/'
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST ='smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL =True
+
+EMAIL_HOST_USER = 'to1egend@yandex.ru'
+EMAIL_HOST_PASSWORD ='zjufburzialiddaa'
+DEFAULT_FROM_EMAIL='to1egend@yandex.ru'
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -146,3 +155,4 @@ AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 
 ACCOUNT_ADAPTER='pizzeria.account_adapter.NoNewUserAccountAdapter'
 LOGIN_REDIRECT_URL = 'dashboard'
+
