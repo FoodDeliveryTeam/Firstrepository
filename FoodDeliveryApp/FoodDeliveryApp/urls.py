@@ -28,6 +28,7 @@ from costumer.views import Index, About, Order
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('costumer/',include('costumer.urls')),
+    path('pizzeria/',include('pizzeria.urls')),
     path('', Index.as_view(), name='index'),
     path('about/', About.as_view(), name='about'),
     path('order/', Order.as_view(),name='order'),

@@ -143,3 +143,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
+
+ACCOUNT_ADAPTER='pizzeria.account_adapter.NoNewUserAccountAdapter'
+LOGIN_REDIRECT_URL = 'dashboard'

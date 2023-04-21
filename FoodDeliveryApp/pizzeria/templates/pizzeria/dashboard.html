@@ -1,0 +1,47 @@
+{% extends 'pizzeria/base.html' %}
+
+{% block content %}
+    <div class ="container">
+        <div class ="row justify-content-center mt-3">
+            <div class = "card col-md-5 mr-3">
+                <h4 class = "text-center pt-2">Общий доход на сегодняшний день</h4>
+                <h1 class ="text-center" style = "color:green;">₸{{ total_revenue}}</h1>
+            </div>
+
+            <div class = "card col-md-5 mr-3">
+                <h4 class = "text-center pt-2">Количество заказов сегодняшнего дня</h4>
+                <h1 class ="text-center" style = "color:#ad0003;">{{ total_orders}}</h1>
+            </div>
+        </div>
+
+        <div class = "row justify-conten-center">
+            <div class = "col-md-12 mt-5">
+                <table class = "table table-hover table-striped">
+                    <thead>
+                    <tr>
+                        <th scope = "com">Номер заказа</th>
+                        <th scope = "com">Цена</th>
+                        <th scope = "com">Имя</th>
+                        <th scope = "com">Email</th>
+                        <th scope = "com">Улица</th>
+                        <th scope = "com">Город</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <th scope = "row">{{ order.pk }}</th>
+                        <td>{{ order.price }}</td>
+                        <td>{{ order.name }}</td>
+                        <td>{{ order.email }}</td>
+                        <td>{{ order.street }}</td>
+                        <td>{{ order.city }}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
