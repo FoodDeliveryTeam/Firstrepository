@@ -19,10 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path,include
-from costumer.views import Index, About, Order
-
-
-
+from costumer.views import Menusearch,Index, About
 
 
 urlpatterns = [
@@ -31,5 +28,6 @@ urlpatterns = [
     path('pizzeria/',include('pizzeria.urls')),
     path('', Index.as_view(), name='index'),
     path('about/', About.as_view(), name='about'),
-    path('order/', Order.as_view(),name='order'),
+    path('menu/search/',Menusearch.as_view(),name='menu-search'),
+    path('cart/',include('cart.urls',namespace='cart')),
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

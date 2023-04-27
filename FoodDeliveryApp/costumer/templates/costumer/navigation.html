@@ -1,49 +1,38 @@
-
 <!DOCTYPE html>
 {% load static %}
 <html>
-   <head>
-     <meta charset="utf-8">
-     <title>A simple navigation bar</title>
-     <link rel="stylesheet" href="{% static 'costumer/css/navigation.css' %}">
-     <script src="{% static 'costumer/css/navigation.css' %}"></script>
-   </head>
-   <body>
-   <div class="container">
-     <nav class="navbar navbar-expand-sm bg-dark navbar-dark rounded">
-       <a class="navbar-brand" href="{% url 'index' %}"> Доставка</a>
-       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-         <span class="navbar-toggler-icon"></span>
-       </button>
-       <div class="collapse navbar-collapse " id="navbarNav">
-         <ul class="navbar-nav me-auto">
-           <li class="nav-item">
-             <a class="nav-link" href="{% url 'about' %}">О нас</span></a>
-           </li>
-           <li class="nav-item">
-             <a class="nav-link" href="#">Меню</a>
-           </li>
-           <li class="nav-item">
-             <a class="nav-link" href="{% url 'register' %}">Регистрация</a>
-           </li>
-           <li class="nav-item">
-             <a class="nav-link" href="{% url 'login' %}">Войти</a>
-           </li>
-           <li class="nav-item">
-             <a class="nav-link" href="#">Контакты</a>
-           </li>
-         </ul>
-         <ul class="navbar-nav">
-           <li class="nav-item">
-             <a class="nav-link" href="{% url 'order' %}">Place an Order</a>
-           </li>
-         </ul>
-       </div>
-
-       <span class="hello-msg">Привет, {{request.user}}</span>
-       <span><a class="hello-msg" href="{% url 'logout' %}">Выход</a></span>
-     </nav>
-   </body>
-
-
+    <head>
+        <title>LegendPizza</title>
+        <link rel="stylesheet" href="{% static 'costumer/css/main.css' %}">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    </head>
+    <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-warning custom-navbar">
+        <a href="{% url 'index' %}">
+            <img src="{% static 'costumer/images/Logo1.png' %}" alt="Логотип" width="100" height="70">
+            <a class="navbar-brand" href="{% url 'index' %}">LegendPizza</a>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a href="{% url 'index' %}" class="btn btn-warning">Главная страница</a>
+                <a href="{% url 'menu' %}" class="btn btn-warning">Меню</a>
+                <a href="{% url 'about' %}" class="btn btn-warning">О нас</a>
+                <a href="{% url 'register' %}" class="btn btn-warning">Регистрация</a>
+                <a href="{% url 'login' %}" class="btn btn-warning">Войти</a>
+            </div>
+        </div>
+        <div class="form-inline my-2 my-lg-0">
+            <a href="{% url 'cart' %}">
+                <img  id="cart-icon" src="{% static 'costumer/images/cart.png' %}">
+            </a>
+            <p id="cart-total">{{ cartItems }}</p>
+        </div>
+        <span class="hello-msg mr-3">Привет, {{request.user}}</span>
+        <span><a class="hello-msg mr-3" href="{% url 'logout' %}">Выход</a></span>
+    </nav>
+    </body>
 </html>

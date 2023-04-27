@@ -1,14 +1,19 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.views import View
 from django.core.mail import send_mail
 from django.contrib import messages
+from django.http import JsonResponse
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate,login,logout
 import sqlite3
-from .models import MenuItem, Category, OrderModel
+from .models import MenuItem, Category, OrderModel,Orderrs,OrderItem
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.db.models import Q
+import json
+import datetime
+
 
 from django.contrib.auth.decorators import login_required
 
@@ -24,78 +29,6 @@ class About(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'costumer/about.html')
 
-
-class Order(View):
-    def get(self, request, *args, **kwargs):
-        # get every item from each category
-        appetizers = MenuItem.objects.filter(category__name__contains='Appetizer')
-        pizzas = MenuItem.objects.filter(category__name__contains='Pizza')
-        desserts = MenuItem.objects.filter(category__name__contains='Dessert')
-        drinks = MenuItem.objects.filter(category__name__contains='Drink')
-
-        # pass into context
-        context = {
-            'appetizers': appetizers,
-            'pizzas': pizzas,
-            'desserts': desserts,
-            'drinks': drinks,
-        }
-
-        # render the template
-        return render(request, 'costumer/order.html', context)
-
-    def post(self, request, *args, **kwargs):
-        name=request.POST.get('name')
-        email=request.POST.get('email')
-        street=request.POST.get('street')
-        city=request.POST.get('city')
-
-
-        order_items = {
-            'items': []
-        }
-
-        items = request.POST.getlist('items[]')
-
-        for item in items:
-            menu_item = MenuItem.objects.get(pk__contains=int(item))
-            item_data = {
-                'id': menu_item.pk,
-                'name': menu_item.name,
-                'price': menu_item.price
-            }
-
-            order_items['items'].append(item_data)
-
-        price = 0
-        item_ids = []
-
-        for item in order_items['items']:
-            price += item['price']
-            item_ids.append(item['id'])
-
-        order = OrderModel.objects.create(price=price,name=name,email=email,street=street,city=city)
-        order.items.add(*item_ids)
-
-        #отпрвить сообщение на почту или смс
-        body=('Спасибо за заказ!Ваш заказ будет готов с минуты на минуту и будет доставлен наибыстрейшим способом!\n'
-              f'Итоговая цена : {price}\n'
-              'Спасибо за заказ ! Заказывайте еще!')
-
-        send_mail(
-            'Спасибо за заказ!',
-            body,
-            'project@gmail.com',
-            [email],
-            fail_silently=False
-        )
-
-        context = {
-            'items': order_items['items'],
-            'price': price
-        }
-
-        return render(request, 'costumer/order_confirmation.html', context)
 
 
 def register(request):
@@ -134,4 +67,119 @@ def login_view(request):
 def logoutuser(request):
     logout(request)
     return redirect('login')
+
+def menu(request):
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        orderrs ,created = Orderrs.objects.get_or_create(customer=customer,complete=False)
+        products = orderrs.orderitem_set.all()
+        cartItems=orderrs.get_cart_products
+    else:
+        products=[]
+        orderrs={'get_cart_total':0,'get_cart_products':0, 'shipping':False}
+        cartItems = orderrs['get_cart_products']
+
+    menu_items = MenuItem.objects.all()
+    context={'menu_items':menu_items,'cartItems':cartItems}
+    return render(request, 'costumer/menu.html', context)
+
+class Menusearch(View):
+    def get(self, request, *args, **kwargs):
+        query = self.request.GET.get("q")
+
+        menu_items=MenuItem.objects.filter(
+            Q(name__icontains=query)|
+            Q(price__icontains=query)|
+            Q(description__icontains=query)
+        )
+
+        context = {
+            'menu_items':menu_items
+        }
+
+        return render(request,'costumer/menu.html',context)
+
+def cart(request):
+
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        orderrs ,created = Orderrs.objects.get_or_create(customer=customer,complete=False)
+        products = orderrs.orderitem_set.all()
+        cartItems=orderrs.get_cart_products
+    else:
+        products=[]
+        orderrs={'get_cart_total':0,'get_cart_products':0,'shipping':False}
+        cartItems = orderrs['get_cart_products']
+
+    context={'products':products,'orderrs':orderrs,'cartItems':cartItems}
+    return render(request,'costumer/cart.html',context)
+
+def checkout(request):
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        orderrs ,created = Orderrs.objects.get_or_create(customer=customer,complete=False)
+        products = orderrs.orderitem_set.all()
+        cartItems = orderrs.get_cart_products
+    else:
+        products=[]
+        orderrs={'get_cart_total':0,'get_cart_products':0,'shipping':False}
+        cartItems = orderrs['get_cart_products']
+
+    context={'products':products,'orderrs':orderrs,'cartItems':cartItems}
+    return render(request,'costumer/checkout.html',context)
+
+
+def update_item(request):
+    data = json.loads(request.body)
+    itemId = data['itemId']
+    action = data['action']
+    print('Action:', action)
+    print('itemId:', itemId)
+
+    customer = request.user.customer
+    item=MenuItem.objects.get(id=itemId)
+    orderrs, created = Orderrs.objects.get_or_create(customer=customer, complete=False)
+    orderrsItem , created = OrderItem.objects.get_or_create(orderrs=orderrs,item=item)
+
+    if action == 'add':
+        orderrsItem.quantity=(orderrsItem.quantity + 1)
+    elif action =='remove':
+        orderrsItem.quantity = (orderrsItem.quantity - 1)
+
+    orderrsItem.save()
+
+    if orderrsItem.quantity <= 0:
+        orderrsItem.delete()
+
+    return JsonResponse('Item was added', safe=False)
+
+def processorder(request):
+    transaction_id = datetime.datetime.now().timestamp()
+    data = json.loads(request.body)
+
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        orderrs, created = Orderrs.objects.get_or_create(customer=customer, complete=False)
+        total = float(data['form']['total'])
+        orderrs.transaction_id = transaction_id
+
+        if total == float(orderrs.get_cart_total):
+            orderrs.complete = True
+        orderrs.save()
+
+        if orderrs.shipping == True:
+            OrderModel.objects.create(
+                customer=customer,
+                orderrs=orderrs,
+                street=data['shipping']['street'],
+                city = data['shipping']['city'],
+
+            )
+
+    else:
+        print('User is not logged in...')
+        return render(request,'costumer/login.html')
+
+    return JsonResponse('Very Good', safe=False)
+
 

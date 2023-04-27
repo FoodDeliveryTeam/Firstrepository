@@ -1,0 +1,56 @@
+{% extends 'costumer/base.html '%}
+{% load static %}
+
+{% block content %}
+
+<div class = "row">
+  <div class="col-lg-10 mx-auto mt-3">
+    <div class="box-element">
+      <a class="btn btn-outline-warning" href="{% url 'menu' %}">&#x2190; Продолжить покупки</a>
+
+      <br>
+      <br>
+
+      <table class="table">
+        <tr>
+          <th><h5>Items: <strong>{{ orderrs.get_cart_products }}</strong> </h5></th>
+          <th><h5>Total: <strong>{{ orderrs.get_cart_total }}₸</strong> </h5></th>
+          <th>
+            <a class="btn btn-success float-right" href="{% url 'checkout' %}">Checkout</a>
+          </th>
+        </tr>
+      </table>
+
+    </div>
+
+    <br>
+
+    <div class="box-element">
+      <div class="cart-row">
+        <div style="flex:2"></div>
+        <div style="flex:2"><strong>Item</strong></div>
+        <div style="flex:1"><strong>Price</strong></div>
+        <div style="flex:1"><strong>Quantity</strong></div>
+        <div style="flex:1"><strong>Total</strong></div>
+      </div>
+
+      {% for product in products %}
+      <div class="cart-row">
+        <div style="flex:2"><img class="row-image" src="{{ product.item.image.url }}"></div>
+        <div style="flex:2">{{ product.item.name }}</div>
+        <div style="flex:1">{{ product.item.price }}</div>
+        <div style="flex:1">
+          <p class="quantity">{{ product.quantity }}</p>
+          <div class="quantity">
+            <img data-item="{{ product.item.id }}" data-action="add" class="chg-quantity update-cart" src="{% static 'costumer/images/arrow-up.png' %}">
+            <img data-item="{{ product.item.id }}" data-action="remove" class="chg-quantity update-cart" src="{% static 'costumer/images/arrow-down.png' %}">
+          </div>
+        </div>
+        <div style="flex:1">₸{{ product.get_total }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
