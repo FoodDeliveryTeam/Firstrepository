@@ -2,6 +2,46 @@
 {% load static %}
 {% block content %}
 
+<style>
+  #qr-modal {
+  max-width: 50%;
+}
+  .modal {
+    display: none; /* Скрываем модальное окно */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%; /* Изменено с 80% на 50% */
+}
+
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+</style>
+
 <div class="row">
   <div class="col-lg-5 offset-lg-1 mt-5">
     <div class="box-element" id="form-wrapper">
@@ -33,10 +73,9 @@
         <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
       </form>
     </div>
-
     <div class="box-element hidden mt-3" id="payment-info">
           <small>Paypal options</small>
-          <button id="make-payment">Оплатить</button>
+          <button id="make-payment">Заказать </button>
     </div>
 
     <br>
@@ -62,6 +101,8 @@
     </div>
   </div>
 </div>
+
+
 
 <script type="text/javascript">
 		var shipping = '{{ orderrs.shipping }}'

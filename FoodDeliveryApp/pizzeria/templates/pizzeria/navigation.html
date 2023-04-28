@@ -7,8 +7,8 @@
   }
 </style>
 
-<nav class="navbar navbar-expand-sm bg-warning navbar-light">
-  <a class="navbar-brand" href="{% url 'index' %}">Доставка</a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light custom-navbar  fixed-top sticky-top ">
+  <a class="navbar-brand" href="{% url 'index' %}">Главная</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -20,7 +20,7 @@
     </ul>
   </div>
 
-  <span class="hello-msg">Привет, {{request.user}}</span>
+  <span class="hello-msg color:light">Привет, {{request.user}}</span>
   <span><a class="hello-msg" href = "{% url 'logout' %}" > Выход </a></span>
 
 </nav>

@@ -13,12 +13,12 @@ from django.urls import reverse_lazy
 from django.db.models import Q
 import json
 import datetime
+from django.db.models import Prefetch
 
 
 from django.contrib.auth.decorators import login_required
 
 from.forms import CreateUserForm
-
 
 class Index(View):
     def get(self, request, *args, **kwargs):
@@ -64,24 +64,28 @@ def login_view(request):
         context = {}
         return render(request, 'accounts/login.html', context)
 
+
+
 def logoutuser(request):
     logout(request)
     return redirect('login')
 
+
 def menu(request):
     if request.user.is_authenticated:
         customer = request.user.customer
-        orderrs ,created = Orderrs.objects.get_or_create(customer=customer,complete=False)
+        orderrs ,created = Orderrs.objects.get_or_create(customer=customer, complete=False)
         products = orderrs.orderitem_set.all()
-        cartItems=orderrs.get_cart_products
+        cartItems = orderrs.get_cart_products
     else:
-        products=[]
-        orderrs={'get_cart_total':0,'get_cart_products':0, 'shipping':False}
+        products = []
+        orderrs = {'get_cart_total': 0, 'get_cart_products': 0, 'shipping': False}
         cartItems = orderrs['get_cart_products']
 
-    menu_items = MenuItem.objects.all()
-    context={'menu_items':menu_items,'cartItems':cartItems}
+    categories = Category.objects.prefetch_related(Prefetch('item', queryset=MenuItem.objects.all().order_by('name')))
+    context = {'categories': categories, 'cartItems': cartItems}
     return render(request, 'costumer/menu.html', context)
+
 
 class Menusearch(View):
     def get(self, request, *args, **kwargs):
@@ -181,5 +185,6 @@ def processorder(request):
         return render(request,'costumer/login.html')
 
     return JsonResponse('Very Good', safe=False)
+
 
 

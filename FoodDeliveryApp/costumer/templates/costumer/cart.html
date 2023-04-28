@@ -3,6 +3,7 @@
 
 {% block content %}
 
+
 <div class = "row">
   <div class="col-lg-10 mx-auto mt-3">
     <div class="box-element">
@@ -16,7 +17,11 @@
           <th><h5>Items: <strong>{{ orderrs.get_cart_products }}</strong> </h5></th>
           <th><h5>Total: <strong>{{ orderrs.get_cart_total }}₸</strong> </h5></th>
           <th>
-            <a class="btn btn-success float-right" href="{% url 'checkout' %}">Checkout</a>
+            {% if orderrs.get_cart_total > 0 %}
+              <a class="btn btn-success float-right" href="{% url 'checkout' %}">Checkout</a>
+            {% else %}
+              <a class="btn btn-warning float-right" href="{% url 'menu' %}">Перейти в меню</a>
+            {% endif %}
           </th>
         </tr>
       </table>

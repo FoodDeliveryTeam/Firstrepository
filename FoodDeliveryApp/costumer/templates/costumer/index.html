@@ -1,17 +1,210 @@
-{% extends 'costumer/base.html '%}
+{% extends 'costumer/base.html' %}
 {% load static %}
 
-
 {% block content %}
-<div class="container">
-    <div class="row justify-content-center mt-5">
-        <div class="col-md-6 col-sm-12 text-center">
-            <h1>Что у нас есть?</h1>
+<style>
+    .intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%), url("{% static 'costumer/images/fonindex.jpg' %}");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-top: -80px; /* отступ наверх, чтобы картинка была за навбаром */
+}
+.intro h1 {
+  font-family: sans-serif;
+  font-size: 60px;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.intro p {
+  font-size: 20px;
+  color: #d1d1d1;
+  text-transform: uppercase;
+  margin: 20px 0;
+}
+
+.intro button {
+  background-color: #5edaf0;
+  color: #000;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 5px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.4)
+}
+
+.spinner {
+  width: 160px;
+  height: 160px;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  animation: spin 4s linear infinite;
+  position: fixed;
+  top: 50%;
+  margin-top:70px;
+}
+
+
+.pizza-part {
+  width: 80px;
+  height: 80px;
+}
+
+.pizza-part-1 {
+  animation: pizza1 2s ease-in-out infinite;
+}
+
+.pizza-part-2 {
+  animation: pizza2 2s ease-in-out infinite;
+}
+
+.pizza-part-3 {
+  animation: pizza4 2s ease-in-out infinite;
+}
+
+.pizza-part-4 {
+  animation: pizza3 2s ease-in-out infinite;
+}
+
+/* animations */
+@keyframes spin {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(360deg);
+  }
+}
+
+@keyframes pizza1 {
+  0% {
+    transform: translate(-20%, -20%);
+    opacity: 0;
+  }
+  10% {
+    transform: translate(0%, 0%);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(0%, 0%);
+    opacity: 1;
+  }
+  60% {
+    transform: translate(-20%, -20%);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-20%, -20%);
+    opacity: 0;
+  }
+}
+
+@keyframes pizza2 {
+  0% {
+    transform: translate(20%, -20%) rotateZ(90deg);
+    opacity: 0;
+  }
+  10% {
+    transform: translate(20%, -20%) rotateZ(90deg);
+    opacity: 0;
+  }
+  20% {
+    transform: translate(0%, 0%) rotateZ(90deg);
+    opacity: 1;
+  }
+  60% {
+    transform: translate(0%, 0%) rotateZ(90deg);
+    opacity: 1;
+  }
+  70% {
+    transform: translate(20%, -20%) rotateZ(90deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(20%, -20%) rotateZ(90deg);
+    opacity: 0;
+  }
+}
+
+@keyframes pizza3 {
+  0% {
+    transform: translate(20%, 20%) rotateZ(180deg);
+    opacity: 0;
+  }
+  20% {
+    transform: translate(20%, 20%) rotateZ(180deg);
+    opacity: 0;
+  }
+  30% {
+    transform: translate(0%, 0%) rotateZ(180deg);
+    opacity: 1;
+  }
+  70% {
+    transform: translate(0%, 0%) rotateZ(180deg);
+    opacity: 1;
+  }
+  80% {
+    transform: translate(20%, 20%) rotateZ(180deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(20%, 20%) rotateZ(180deg);
+    opacity: 0;
+  }
+}
+
+@keyframes pizza4 {
+  0% {
+    transform: translate(-20%, 20%) rotateZ(-90deg);
+    opacity: 0;
+  }
+  30% {
+    transform: translate(-20%, 20%) rotateZ(-90deg);
+    opacity: 0;
+  }
+  40% {
+    transform: translate(0%, 0%) rotateZ(-90deg);
+    opacity: 1;
+  }
+  80% {
+    transform: translate(0%, 0%) rotateZ(-90deg);
+    opacity: 1;
+  }
+  90% {
+    transform: translate(-20%, 20%) rotateZ(-90deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-20%, 20%) rotateZ(-90deg);
+    opacity: 0;
+  }
+
+</style>
+<main>
+    <div class="intro">
+        <h1>Добро пожаловать в Legend <i class="fas fa-pizza-slice"></i> Pizza!</h1>
+        <button class="bg-warning"><a href="{% url 'menu' %}" class="btn-warning">Меню</a></button>
+        <div class="spinner">
+          <img src="{% static 'costumer/images/ani.png'  %}" class="pizza-part pizza-part-1" />
+          <img src="{% static 'costumer/images/ani.png'  %}" class="pizza-part pizza-part-2" />
+          <img src="{% static 'costumer/images/ani.png'  %}" class="pizza-part pizza-part-3" />
+          <img src="{% static 'costumer/images/ani.png'  %}" class="pizza-part pizza-part-4" />
         </div>
     </div>
-</div>
 
 
 
-
-{% endblock content %}
+</main>
+{% endblock content%}
