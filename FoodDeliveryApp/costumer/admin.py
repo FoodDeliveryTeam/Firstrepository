@@ -10,10 +10,5 @@ admin.site.register(Orderrs)
 admin.site.register(OrderItem)
 
 
-def image_show(self,obj):
-    if obj.image:
-        return mark_safe("<img src='{{ item.image }}' width='60' />",format(obj.image.url))
-    return "None"
 
-image_show.__name__="Картинка"
 # Register your models here.

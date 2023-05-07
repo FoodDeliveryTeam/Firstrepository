@@ -192,10 +192,15 @@
   }
 
 </style>
+
 <main>
     <div class="intro">
         <h1>Добро пожаловать в Legend <i class="fas fa-pizza-slice"></i> Pizza!</h1>
+        {% if user.is_authenticated and user.is_staff %}
+        <button class="bg-warning"><a href="{% url 'dashboard' %}" class="btn-warning">Доска заказов</a></button>
+        {% else %}
         <button class="bg-warning"><a href="{% url 'menu' %}" class="btn-warning">Меню</a></button>
+        {% endif %}
         <div class="spinner">
           <img src="{% static 'costumer/images/ani.png'  %}" class="pizza-part pizza-part-1" />
           <img src="{% static 'costumer/images/ani.png'  %}" class="pizza-part pizza-part-2" />
@@ -203,8 +208,5 @@
           <img src="{% static 'costumer/images/ani.png'  %}" class="pizza-part pizza-part-4" />
         </div>
     </div>
-
-
-
 </main>
 {% endblock content%}

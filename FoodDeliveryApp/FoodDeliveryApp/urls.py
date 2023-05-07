@@ -29,5 +29,4 @@ urlpatterns = [
     path('', Index.as_view(), name='index'),
     path('about/', About.as_view(), name='about'),
     path('menu/search/',Menusearch.as_view(),name='menu-search'),
-    path('cart/',include('cart.urls',namespace='cart')),
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

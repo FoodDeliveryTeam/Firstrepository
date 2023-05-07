@@ -1,7 +1,12 @@
 <footer class="page-footer font-small bg-dark navbar-dark fixed-bottom">
   <div class="container text-white">
-      <div class="footer-copyright text-center py-3">&copy PizzaofGod 2023 Авторское право:
-          <a class="ml-3" href="{% url 'dashboard' %}">tolegenisbro@gmail.com</a>
+      <div class="footer-copyright text-center py-3">
+          &copy PizzaofLegend 2023 Авторское право:
+          {% if user.is_authenticated and user.is_staff %}
+            <a class="ml-3" href="{% url 'dashboard' %}">tolegenisbro@gmail.com</a>
+          {% else %}
+            tolegenisbro@gmail.com
+          {% endif %}
       </div>
   </div>
 </footer>
