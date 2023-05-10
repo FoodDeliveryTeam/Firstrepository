@@ -7,13 +7,17 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate,login,logout
 import sqlite3
-from .models import MenuItem, Category, OrderModel,Orderrs,OrderItem
+from .models import MenuItem, Category, OrderModel,Orderrs,OrderItem,Customer
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.db.models import Q
 import json
 import datetime
 from django.db.models import Prefetch
+from django.contrib.auth import login as auth_login
+from django.contrib.auth.decorators import login_required
+
+
 
 
 from django.contrib.auth.decorators import login_required
@@ -29,23 +33,28 @@ class About(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'costumer/about.html')
 
+class News(View):
+    def get(self,request,*args,**kwargs):
+        return render(request,'costumer/news.html')
+
 
 
 def register(request):
     if request.user.is_authenticated:
         return redirect('index')
     else:
-        form=CreateUserForm
         if request.method == "POST":
             form = CreateUserForm(request.POST)
             if form.is_valid():
-                form.save()
-                user=form.cleaned_data.get('username')
-                messages.success(request,'Аккаунт был создан ' + user)
-                return redirect('login')
+                user = form.save()
+                auth_login(request, user)  # Автоматический вход пользователя после регистрации
+                messages.success(request, 'Аккаунт был создан ' + user.username)
+                return redirect('index')
 
-        context = {'form' : form}
-        return render(request,'accounts/register.html',context)
+        form = CreateUserForm()
+        context = {'form': form}
+        return render(request, 'accounts/register.html', context)
+
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -84,7 +93,7 @@ def menu(request):
 
     categories = Category.objects.prefetch_related(Prefetch('item', queryset=MenuItem.objects.all().order_by('name')))
     context = {'categories': categories, 'cartItems': cartItems}
-    return render(request, 'costumer/menu.html', context)
+    return render(request, 'costumer/menu.html',context)
 
 
 class Menusearch(View):

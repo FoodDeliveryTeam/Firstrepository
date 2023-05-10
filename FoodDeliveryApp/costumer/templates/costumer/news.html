@@ -1,0 +1,88 @@
+{% extends 'costumer/base.html' %}
+{% load static %}
+{% block content %}
+  <style>
+    /* Глобальные стили */
+    body {
+      <ba></ba>ckground-image: url("{% static 'costumer/images/fonindex2.jpg' %}");
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+
+      font-family: Arial, sans-serif;
+    }
+
+    /* Стили для размещения новости */
+    .news-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    /* Стили для карточки */
+    .card {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      margin-right: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      background-color: #fff;
+    }
+
+    /* Стили для текстового блока в карточке */
+    .text-block {
+      flex: 1;
+      text-align: left;
+      margin-right: 20px;
+    }
+
+    /* Стили для картинки пиццы */
+    .pizza-image {
+      width: 300px;
+      height: auto;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Стили для заголовков */
+    h2 {
+      margin-top: 0;
+    }
+
+    /* Стили для абзацев */
+    p {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Новости новых пиццах</h1>
+
+  <div class="news-container">
+    <div class="card">
+      <div class="text-block">
+        <h2>Ірімшікті пицца</h2>
+        <p>Текст новости 1.</p>
+      </div>
+      <img class="pizza-image" src="/static/costumer/images/newpiz1.jpg" alt="Пицца 1">
+    </div>
+  </div>
+
+  <div class="news-container">
+    <div class="card">
+      <div class="text-block">
+        <h2>Мексикалық пицца</h2>
+        <p>Текст новости 2.</p>
+      </div>
+      <img class="pizza-image" src="/static/costumer/images/newpiz2.jpg" alt="Пицца 2">
+    </div>
+  </div>
+</body>
+
+{% endblock %}

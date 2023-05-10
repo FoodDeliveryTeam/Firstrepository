@@ -145,7 +145,6 @@ MEDIA_URL= '/media/'
 CART_SESSION_ID = 'cart'
 
 
-
 EMAIL_HOST ='smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_USE_TLS = False
